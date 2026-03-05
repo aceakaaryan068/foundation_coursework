@@ -113,3 +113,28 @@ def demo_ascii():
         print(f"ASCII encoding FAILS: {e}")
         utf8_encoded = non_ascii.encode("utf-8")
         print(f"UTF-8 handles it    : {utf8_encoded}")
+
+        # SECTION 4 — HEX ENCODING
+# ─────────────────────────────────────────────────────────────
+
+def demo_hex():
+    print("\n" + "=" * 60)
+    print("SECTION 4: Hexadecimal Encoding")
+    print("=" * 60)
+
+    data = "ST4015CMD"
+    hex_encoded = data.encode("utf-8").hex()
+    hex_decoded = bytes.fromhex(hex_encoded).decode("utf-8")
+
+    print(f"\nOriginal  : {data}")
+    print(f"Hex       : {hex_encoded}")
+    print(f"Decoded   : {hex_decoded}")
+    print(f"Size      : {len(hex_encoded)} bytes vs {len(data)} bytes (100% overhead)")
+
+    # SHA-256 hash shown in hex (typical use case)
+    message = "Softwarica College Assignment"
+    sha256_hex = hashlib.sha256(message.encode()).hexdigest()
+    print(f"\n--- SHA-256 Hash (displayed in Hex) ---")
+    print(f"Input   : {message}")
+    print(f"SHA-256 : {sha256_hex}")
+    print(f"Length  : {len(sha256_hex)} hex chars = 32 bytes")

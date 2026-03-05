@@ -87,3 +87,29 @@ def demo_url_encoding():
     print(f"\n--- SQL Injection Prevention via Encoding ---")
     print(f"Raw user input (DANGEROUS) : {user_input}")
     print(f"URL encoded (SAFE)         : {safe}")
+
+    # SECTION 3 — ASCII ENCODING
+# ─────────────────────────────────────────────────────────────
+
+def demo_ascii():
+    print("\n" + "=" * 60)
+    print("SECTION 3: ASCII Encoding")
+    print("=" * 60)
+
+    text = "Foundation of Computer Science"
+    print(f"\nText : {text}")
+    print(f"\n{'Char':<6} {'ASCII Decimal':<16} {'ASCII Hex'}")
+    print("-" * 35)
+    for ch in text:
+        print(f"{ch!r:<6} {ord(ch):<16} {ord(ch):#04x}")
+
+    # Showing ASCII limitation: non-Latin characters
+    print(f"\n--- ASCII Limitation ---")
+    non_ascii = "Namaste: नमस्ते"
+    print(f"Text: {non_ascii}")
+    try:
+        non_ascii.encode("ascii")
+    except UnicodeEncodeError as e:
+        print(f"ASCII encoding FAILS: {e}")
+        utf8_encoded = non_ascii.encode("utf-8")
+        print(f"UTF-8 handles it    : {utf8_encoded}")

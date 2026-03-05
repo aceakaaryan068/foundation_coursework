@@ -34,3 +34,18 @@ Builds a constraint graph connecting constrained student pairs
 Sorts students by number of constraints (most constrained seated first)
 Greedily inserts each student at the position with fewest violations
 Significantly faster than brute force
+
+Scalability Table
+The script also prints a table showing how n! grows catastrophically with class size, demonstrating why brute force becomes computationally impossible beyond small inputs.
+
+How to Run
+bash# No external libraries required
+python task2_seating_problem.py
+Sample Output
+APPROACH 1: Brute Force (O(n!))
+Permutations checked : 312
+Total possible       : 720
+Time taken           : 0.847 ms
+
+APPROACH 2: Heuristic — Degree-First Greedy (O(n^2))
+Time taken : 0.0312 ms

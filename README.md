@@ -49,3 +49,26 @@ Time taken           : 0.847 ms
 
 APPROACH 2: Heuristic — Degree-First Greedy (O(n^2))
 Time taken : 0.0312 ms
+
+
+Task 3 — College Club Membership Database
+File: task3_club_database.sql
+This SQL file implements the fully normalised (3NF) relational schema for the college club membership system.
+Schema Overview
+Student (StudentID PK, StudentName, Email)
+    |
+    | 1 ──────── M
+    |
+Membership (MembershipID PK, StudentID FK, ClubID FK, JoinDate)
+    |
+    | M ──────── 1
+    |
+Club (ClubID PK, ClubName, ClubRoom, ClubMentor)
+What the File Includes
+
+CREATE TABLE statements for all three tables with primary keys, foreign keys, and constraints
+INSERT statements loading all original data from the unnormalised table
+Basic SELECT queries — display all students, display all clubs
+INSERT queries — add a new student and a new club
+JOIN query — retrieves StudentName, ClubName, and JoinDate across all three tables
+Additional queries — club member counts, student club lookup, update demo (no anomaly), delete demo (no anomaly)

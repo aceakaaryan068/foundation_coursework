@@ -203,3 +203,22 @@ def demo_secure_pipeline():
 
     print(f"Signature valid  : {is_valid}")
     print(f"Decoded message  : {decoded_message}")
+
+# MAIN
+# ─────────────────────────────────────────────────────────────
+
+if __name__ == "__main__":
+    print("\n" + "#" * 60)
+    print("  ST4015CMD — Task 1: Encoding Formats Demonstration")
+    print("#" * 60)
+
+    demo_base64()
+    demo_url_encoding()
+    demo_ascii()
+    demo_hex()
+    demo_obfuscation_risk()
+    demo_secure_pipeline()
+
+    print("\n" + "=" * 60)
+    print("All demonstrations complete.")
+    print("=" * 60)

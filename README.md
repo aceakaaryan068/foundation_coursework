@@ -1,90 +1,159 @@
-# foundation_coursework
-testing
-Task 1 — Encoding Formats and Secure Data Exchange
-File: task1_encoding_demo.py
-This script demonstrates all encoding formats discussed in the report:
+## 📁 Repository Structure
 
-Base64 — encoding binary data and HTTP Basic Auth credentials
-Base64URL — used in JWT tokens and OAuth 2.0
-URL Encoding — percent encoding for safe HTTP transmission
-ASCII — character-to-integer mapping and limitations
-Hex Encoding — SHA-256 hash output in hexadecimal
-Obfuscation Risk — encoding stacking attack (simulating Log4Shell-style evasion)
-Secure Pipeline — simulated Base64 + HMAC data transmission flow
-How to Run
-bash# No external libraries required — uses Python standard library only
+```
+ST4015CMD-Foundation-CS/
+│
+├── task1_encoding_demo.py       # Task 1 — Encoding formats & secure data exchange
+├── task2_seating_problem.py     # Task 2 — P vs NP seating arrangement solver
+├── task3_club_database.sql      # Task 3 — College club database schema & queries
+├── .gitignore
+└── README.md
+```
+
+---
+
+## 📌 Task 1 — Encoding Formats and Secure Data Exchange
+
+**File:** `task1_encoding_demo.py`
+
+This script practically demonstrates all encoding formats covered in the written report, showing how each format works, its size overhead, and where it fits within secure web communication.
+
+### What it covers
+
+| Section | What it demonstrates |
+|---------|----------------------|
+| Section 1 | Base64 encoding/decoding, HTTP Basic Auth header, JWT Base64URL |
+| Section 2 | URL percent encoding, injection prevention |
+| Section 3 | ASCII character mapping and its limitations with non-Latin text |
+| Section 4 | Hex encoding, SHA-256 hash output in hexadecimal |
+| Section 5 | Encoding stacking — how attackers obfuscate malicious payloads |
+| Section 6 | Simulated secure pipeline using Base64 + HMAC integrity check |
+
+### How to run
+
+```bash
 python task1_encoding_demo.py
-Expected Output
-The script prints each encoding format in turn, showing original input, encoded output, decoded output, and size overhead. Section 5 demonstrates how attackers stack encoding layers to bypass security scanners.
+```
 
+> No external packages needed — uses Python standard library only.
 
-Task 2 — P vs NP: Classroom Seating Arrangement
-File: task2_seating_problem.py
-This script models the classroom seating problem with 6 students, 4 friend pairs, and city constraints, then solves it using two approaches:
-Approach 1: Brute Force (O(n!))
+### Sample output
 
-Generates every possible permutation using itertools.permutations
-Checks each permutation against both constraints
-Returns the first valid arrangement found
-Prints how many permutations were checked and time taken
+```
+SECTION 1: Base64 Encoding
+Original text  : Hello, this is a secret message!
+Base64 encoded : SGVsbG8sIHRoaXMgaXMgYSBzZWNyZXQgbWVzc2FnZSE=
+Decoded back   : Hello, this is a secret message!
+Size overhead  : 44 bytes vs 32 bytes (+38%)
+```
 
-Approach 2: Heuristic — Degree-First Greedy (O(n²))
+---
 
-Builds a constraint graph connecting constrained student pairs
-Sorts students by number of constraints (most constrained seated first)
-Greedily inserts each student at the position with fewest violations
-Significantly faster than brute force
+## 📌 Task 2 — P vs NP: Classroom Seating Problem
 
-Scalability Table
-The script also prints a table showing how n! grows catastrophically with class size, demonstrating why brute force becomes computationally impossible beyond small inputs.
+**File:** `task2_seating_problem.py`
 
-How to Run
-bash# No external libraries required
+Demonstrates why the seating arrangement problem belongs to the NP complexity class by solving it two ways and comparing the results directly.
+
+### The Problem
+
+A teacher must seat students in a single row such that:
+- ❌ No two **friends** sit next to each other
+- ❌ No two students from the **same city** sit next to each other
+
+### Two approaches compared
+
+| Approach | Time Complexity | Description |
+|----------|----------------|-------------|
+| **Brute Force** | O(n!) | Tries every possible permutation until a valid one is found |
+| **Heuristic** | O(n²) | Degree-first greedy — seats most constrained students first |
+
+### How to run
+
+```bash
 python task2_seating_problem.py
-Sample Output
+```
+
+### Sample output
+
+```
 APPROACH 1: Brute Force (O(n!))
-Permutations checked : 312
+Permutations checked : 49
 Total possible       : 720
-Time taken           : 0.847 ms
+Time taken           : 0.038 ms
+Solution: Asha | Rohan | Bikash | Nisha | Suman | Pooja  ✓
 
-APPROACH 2: Heuristic — Degree-First Greedy (O(n^2))
-Time taken : 0.0312 ms
+APPROACH 2: Heuristic (O(n²))
+Time taken  : 0.053 ms
+Solution: Pooja | Suman | Nisha | Bikash | Rohan | Asha  ✓
+Violations  : 0
+```
 
+### Why brute force fails at scale
 
-Task 3 — College Club Membership Database
-File: task3_club_database.sql
-This SQL file implements the fully normalised (3NF) relational schema for the college club membership system.
-Schema Overview
-Student (StudentID PK, StudentName, Email)
-    |
-    | 1 ──────── M
-    |
-Membership (MembershipID PK, StudentID FK, ClubID FK, JoinDate)
-    |
-    | M ──────── 1
-    |
-Club (ClubID PK, ClubName, ClubRoom, ClubMentor)
-What the File Includes
+| Students | Permutations | Time at 10⁶ checks/sec |
+|----------|-------------|------------------------|
+| 5 | 120 | 0.00 seconds |
+| 10 | 3,628,800 | 3.6 seconds |
+| 15 | 1,307,674,368,000 | 15 days |
+| 20 | 2.43 × 10¹⁸ | 77,000 years |
 
-CREATE TABLE statements for all three tables with primary keys, foreign keys, and constraints
-INSERT statements loading all original data from the unnormalised table
-Basic SELECT queries — display all students, display all clubs
-INSERT queries — add a new student and a new club
-JOIN query — retrieves StudentName, ClubName, and JoinDate across all three tables
-Additional queries — club member counts, student club lookup, update demo (no anomaly), delete demo (no anomaly)
+---
 
-How to Run
-bash# MySQL / MariaDB
+## 📌 Task 3 — College Club Membership Database
+
+**File:** `task3_club_database.sql`
+
+Full relational database implementation for the college club management system, normalised to Third Normal Form (3NF).
+
+### Schema
+
+```
+┌─────────────────┐         ┌──────────────────────┐         ┌─────────────────┐
+│    STUDENT      │         │     MEMBERSHIP        │         │      CLUB       │
+├─────────────────┤         ├──────────────────────┤         ├─────────────────┤
+│ StudentID  (PK) │──────── │ MembershipID    (PK) │ ──────── │ ClubID     (PK) │
+│ StudentName     │   1:M   │ StudentID       (FK) │   M:1   │ ClubName        │
+│ Email           │         │ ClubID          (FK) │         │ ClubRoom        │
+└─────────────────┘         │ JoinDate             │         │ ClubMentor      │
+                            └──────────────────────┘         └─────────────────┘
+```
+
+### What the file includes
+
+- ✅ `CREATE TABLE` — all three tables with primary keys, foreign keys, and constraints
+- ✅ `INSERT` — all original data loaded from the unnormalised source table
+- ✅ `SELECT` — display all students, display all clubs
+- ✅ `INSERT` — add a new student and a new club
+- ✅ `JOIN` — retrieves StudentName, ClubName, and JoinDate across all three tables
+- ✅ Bonus queries — member counts per club, update demo, delete demo
+
+### How to run
+
+```bash
+# Option 1: MySQL command line
 mysql -u root -p < task3_club_database.sql
 
-# Or paste directly into MySQL Workbench / phpMyAdmin / DBeaver
-Normalisation Demonstrated
-The SQL file directly demonstrates the elimination of anomalies:
+# Option 2: Paste directly into MySQL Workbench, DBeaver, or phpMyAdmin
+```
 
-Update anomaly removed: The UPDATE Club SET ClubRoom query changes one row and the change instantly reflects everywhere
-Deletion anomaly removed: Deleting Aman's membership does not remove the Coding Club from the database
+### Anomalies eliminated by normalisation
 
+| Anomaly | Problem in original table | Fixed in 3NF |
+|---------|--------------------------|--------------|
+| **Insert** | Couldn't add a club without a student | Club table is independent |
+| **Update** | Changing a room required updating many rows | One row in Club table |
+| **Delete** | Removing last student deleted the club | Club data is never lost |
 
-Requirements
-ToolVersionPython3.8 or aboveMySQL / MariaDB8.0 or above
-No external Python packages are required. All Task 1 and Task 2 scripts use only the Python standard library (base64, urllib.parse, hashlib, hmac, itertools, time, math).
+---
+
+## ⚙️ Requirements
+
+| Tool | Version |
+|------|---------|
+| Python | 3.8 or above |
+| MySQL / MariaDB | 8.0 or above |
+
+> **No external Python packages required.** Tasks 1 and 2 use only the Python standard library (`base64`, `urllib.parse`, `hashlib`, `hmac`, `itertools`, `time`, `math`).
+
+---

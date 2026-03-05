@@ -72,3 +72,19 @@ Basic SELECT queries — display all students, display all clubs
 INSERT queries — add a new student and a new club
 JOIN query — retrieves StudentName, ClubName, and JoinDate across all three tables
 Additional queries — club member counts, student club lookup, update demo (no anomaly), delete demo (no anomaly)
+
+How to Run
+bash# MySQL / MariaDB
+mysql -u root -p < task3_club_database.sql
+
+# Or paste directly into MySQL Workbench / phpMyAdmin / DBeaver
+Normalisation Demonstrated
+The SQL file directly demonstrates the elimination of anomalies:
+
+Update anomaly removed: The UPDATE Club SET ClubRoom query changes one row and the change instantly reflects everywhere
+Deletion anomaly removed: Deleting Aman's membership does not remove the Coding Club from the database
+
+
+Requirements
+ToolVersionPython3.8 or aboveMySQL / MariaDB8.0 or above
+No external Python packages are required. All Task 1 and Task 2 scripts use only the Python standard library (base64, urllib.parse, hashlib, hmac, itertools, time, math).

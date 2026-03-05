@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: st4015_task3_db
+    environment:
+      POSTGRES_DB: clubdb
+      POSTGRES_USER: clubuser
+      POSTGRES_PASSWORD: clubpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./queries.sql:/docker-entrypoint-initdb.d/02_queries.sql
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:

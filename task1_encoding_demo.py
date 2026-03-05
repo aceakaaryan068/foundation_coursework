@@ -163,3 +163,43 @@ def demo_obfuscation_risk():
     print(f"\nSimple scanner checks: '{layer2[:30]}...' — NO MATCH for known pattern")
     print(f"Recursive decode reveals: {urllib.parse.unquote(base64.b64decode(layer2).decode())}")
     print(f"\nLesson: Security scanners must recursively decode all layers.")
+
+    # SECTION 6 — SIMULATED BASE64 + HMAC DATA FLOW
+# (Represents encoding in a secure web protocol pipeline)
+# ─────────────────────────────────────────────────────────────
+
+def demo_secure_pipeline():
+    print("\n" + "=" * 60)
+    print("SECTION 6: Simulated Secure Data Transmission Pipeline")
+    print("         (Base64 encoding + HMAC integrity check)")
+    print("=" * 60)
+
+    secret_key = b"softwarica_secret_key_2024"
+    message = "Student login: user=asha&token=abc123"
+
+    print(f"\n[SENDER SIDE]")
+    print(f"Original message : {message}")
+
+    # Step 1: Base64 encode the payload
+    b64_payload = base64.b64encode(message.encode()).decode()
+    print(f"Base64 encoded   : {b64_payload}")
+
+    # Step 2: Generate HMAC signature for integrity
+    signature = hmac.new(secret_key, b64_payload.encode(), hashlib.sha256).hexdigest()
+    print(f"HMAC-SHA256 sig  : {signature[:32]}...")
+
+    # Step 3: Bundle as a simple token
+    token = f"{b64_payload}.{signature}"
+    print(f"Token sent       : {token[:60]}...")
+
+    print(f"\n[RECEIVER SIDE]")
+    parts = token.split(".")
+    received_payload, received_sig = parts[0], parts[1]
+
+    # Verify integrity
+    expected_sig = hmac.new(secret_key, received_payload.encode(), hashlib.sha256).hexdigest()
+    is_valid = hmac.compare_digest(received_sig, expected_sig)
+    decoded_message = base64.b64decode(received_payload).decode()
+
+    print(f"Signature valid  : {is_valid}")
+    print(f"Decoded message  : {decoded_message}")

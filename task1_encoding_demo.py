@@ -51,3 +51,39 @@ def demo_base64():
     print(f"JWT Payload    : {payload_json}")
     print(f"Base64URL      : {jwt_b64url}")
     print(f"Note: '+' replaced with '-', '/' replaced with '_' for URL safety")
+
+    # SECTION 2 — URL ENCODING
+# ─────────────────────────────────────────────────────────────
+
+def demo_url_encoding():
+    print("\n" + "=" * 60)
+    print("SECTION 2: URL (Percent) Encoding")
+    print("=" * 60)
+
+    examples = [
+        "hello world",
+        "search?q=python&sort=asc",
+        "price=10&discount=5%",
+        "user@email.com",
+        "<script>alert('xss')</script>",   # XSS attempt
+    ]
+
+    print(f"\n{'Original':<40} {'URL Encoded'}")
+    print("-" * 75)
+    for text in examples:
+        encoded = urllib.parse.quote(text)
+        print(f"{text:<40} {encoded}")
+
+    # Decoding back
+    encoded_param = "search%3Fq%3Dpython%26sort%3Dasc"
+    decoded_param = urllib.parse.unquote(encoded_param)
+    print(f"\n--- Decoding a URL-encoded parameter ---")
+    print(f"Encoded : {encoded_param}")
+    print(f"Decoded : {decoded_param}")
+
+    # Injection risk if NOT encoded
+    user_input = "'; DROP TABLE students; --"
+    safe = urllib.parse.quote(user_input)
+    print(f"\n--- SQL Injection Prevention via Encoding ---")
+    print(f"Raw user input (DANGEROUS) : {user_input}")
+    print(f"URL encoded (SAFE)         : {safe}")
